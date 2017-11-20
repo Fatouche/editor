@@ -1,23 +1,21 @@
 package org.ulco;
 
 public class ID {
-    //static public int ID = 0;
+    public int ID = 0;
 
     private static ID INSTANCE = new ID();
+
+    private ID(){}
 
     public static ID getInstance(){
         return INSTANCE;
     }
 
-    private int id = 0;
-
-    private ID(){}
-
     public int suivant(){
-        return id=id+1;
+        return ID=ID+1;
     }
 
     public int courant(){
-        return id;
+        return ID;
     }
 }
