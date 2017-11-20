@@ -1,6 +1,13 @@
 package org.ulco;
 
 abstract public class GraphicsObject {
+
+    public boolean isGroup(){
+        return false;
+    }
+
+    public int size(){ return 1; }
+
     public GraphicsObject() {
         m_ID = ++ID.ID;
     }
