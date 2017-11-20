@@ -13,9 +13,9 @@ public class JSON {
 
         try {
             classe = Class.forName("org.ulco."+nomClass);
-            Class[] params = new Class[]{String.class};
+            Class[] parametre = new Class[]{String.class};
 
-            Constructor constructeur = classe.getConstructor(params);
+            Constructor constructeur = classe.getConstructor(parametre);
 
             o = (GraphicsObject)constructeur.newInstance(new String[]{str});
         } catch(Exception e) {

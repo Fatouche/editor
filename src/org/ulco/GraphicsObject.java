@@ -9,7 +9,7 @@ abstract public class GraphicsObject {
     public int size(){ return 1; }
 
     public GraphicsObject() {
-        m_ID = ++ID.ID;
+        m_ID = ID.getInstance().suivant();
     }
 
     abstract public GraphicsObject copy();
