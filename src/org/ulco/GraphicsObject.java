@@ -8,6 +8,10 @@ abstract public class GraphicsObject {
 
     public int size(){ return 1; }
 
+    public int type() {
+        return 1;
+    }
+
     public GraphicsObject() {
         m_ID = ID.getInstance().suivant();
     }

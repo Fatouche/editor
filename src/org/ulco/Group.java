@@ -147,54 +147,35 @@ public class Group extends GraphicsObject{
         return size;
     }
 
+    public int type() {
+        return 2;
+    }
+
     public String toJson() {
-        String str = "{ type: group, objects : { ";
+        String object_str = "{ type: group, objects : { ";
+        String group_str = " }, groups : { ";
+        for (GraphicsObject element : m_objectList) {
 
-        for (int i = 0; i < m_objectList.size(); ++i) {
-            if (!m_objectList.elementAt(i).isGroup()){
-                GraphicsObject element = m_objectList.elementAt(i);
-
-                str += element.toJson();
-                if (i < m_objectList.size() - 1) {
-                    str += ", ";
-                }
+            if (element.type() == 1) {
+                object_str += element.toJson() + ", ";
+            } else {
+                group_str += element.toJson();
             }
         }
-        str += " }, groups : { ";
-
-        for (int i = 0; i < m_objectList.size(); ++i) {
-            if (m_objectList.elementAt(i).isGroup()){
-                GraphicsObject element = m_objectList.elementAt(i);
-
-                str += element.toJson();
-            }
-        }
-        return str + " } }";
+        return object_str.substring(0, object_str.length() - 2) + group_str + " } }";
     }
 
     public String toString() {
-        String str = "group[[";
-
-        for (int i = 0; i < m_objectList.size(); ++i) {
-            GraphicsObject element = m_objectList.elementAt(i);
-
-            if (!this.m_objectList.get(i).isGroup()){
-                str += element.toString();
-                if (i < m_objectList.size() - this.compteurGroup() - 1) {
-                    str += ", ";
-                }
+        String object_str = "group[[";
+        String group_str = "],[";
+        for (GraphicsObject element : m_objectList) {
+            if (element.type() == 1) {
+                object_str += element.toString() + ", ";
+            }
+            else {
+                group_str += element.toString();
             }
         }
-        str += "],[";
-
-        for (int i = 0; i < m_objectList.size(); ++i) {
-            GraphicsObject element = m_objectList.elementAt(i);
-
-            if (this.m_objectList.get(i).isGroup()){
-                str += element.toString();
-            }
-        }
-
-        return str + "]]";
+        return object_str.substring(0, object_str.length() -2) + group_str + "]]";
     }
 }
