@@ -1,6 +1,6 @@
 package org.ulco;
 
-abstract public class GraphicsObject {
+abstract public class GraphicsObject implements Parsable {
 
     public boolean isGroup(){
         return false;
@@ -22,7 +22,11 @@ abstract public class GraphicsObject {
         return m_ID;
     }
 
-    abstract boolean isClosed(Point pt, double distance);
+    abstract Point center();
+
+    public boolean isClosed(Point pt, double distance){
+        return center().distance(pt) <= distance;
+    }
 
     abstract void move(Point delta);
 

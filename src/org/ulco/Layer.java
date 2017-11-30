@@ -2,26 +2,18 @@ package org.ulco;
 
 import java.util.Vector;
 
-public class Layer {
+public class Layer implements Parsable {
     public Layer() {
         m_list = new Vector<GraphicsObject>();
         m_ID = ID.getInstance().suivant();
     }
 
     public Layer(String json) {
-        m_list= new Vector<GraphicsObject>();
-        String str = json.replaceAll("\\s+","");
-        int objectsIndex = str.indexOf("objects");
-        int endIndex = str.lastIndexOf("}");
-        int groupsIndex = str.indexOf("groups");
-
-        if (groupsIndex > -1) {
-            parseObjects(str.substring(objectsIndex + 9, groupsIndex - 2));
-            parseGroups(str.substring(groupsIndex + 8, endIndex - 1));
-        }
-        else {
-            parseObjects(str.substring(objectsIndex + 9, endIndex - 1));
-        }
+        Vector<String> separators = new Vector<String>();
+        separators.add("objects");
+        separators.add("groups");
+        separators.add("}");
+        m_list = JSON.parseItems(json, separators);
     }
 
     public void add(GraphicsObject o) {
@@ -38,69 +30,6 @@ public class Layer {
 
     public int getID() {
         return m_ID;
-    }
-
-    private void parseGroups(String groupsStr) {
-        while (!groupsStr.isEmpty()) {
-            int separatorIndex = searchSeparator(groupsStr);
-            String groupStr;
-
-            if (separatorIndex == -1) {
-                groupStr = groupsStr;
-            } else {
-                groupStr = groupsStr.substring(0, separatorIndex);
-            }
-            m_list.add(JSON.parseGroup(groupStr));
-            if (separatorIndex == -1) {
-                groupsStr = "";
-            } else {
-                groupsStr = groupsStr.substring(separatorIndex + 1);
-            }
-        }
-    }
-
-    private void parseObjects(String objectsStr) {
-        while (!objectsStr.isEmpty()) {
-            int separatorIndex = searchSeparator(objectsStr);
-            String objectStr;
-
-            if (separatorIndex == -1) {
-                objectStr = objectsStr;
-            } else {
-                objectStr = objectsStr.substring(0, separatorIndex);
-            }
-            m_list.add(JSON.parse(objectStr));
-            if (separatorIndex == -1) {
-                objectsStr = "";
-            } else {
-                objectsStr = objectsStr.substring(separatorIndex + 1);
-            }
-        }
-    }
-
-    private int searchSeparator(String str) {
-        int index = 0;
-        int level = 0;
-        boolean found = false;
-
-        while (!found && index < str.length()) {
-            if (str.charAt(index) == '{') {
-                ++level;
-                ++index;
-            } else if (str.charAt(index) == '}') {
-                --level;
-                ++index;
-            } else if (str.charAt(index) == ',' && level == 0) {
-                found = true;
-            } else {
-                ++index;
-            }
-        }
-        if (found) {
-            return index;
-        } else {
-            return -1;
-        }
     }
 
     public Vector<GraphicsObject> getM_list() {
