@@ -1,6 +1,8 @@
 package org.ulco;
 
 public class Square extends Rectangle {
+
+    // Constructeurs
     public Square(Point center, double length) {
         this.m_origin = center;
         this.m_width  = length;
@@ -16,9 +18,12 @@ public class Square extends Rectangle {
         return new Square(m_origin.copy(), m_width);
     }
 
-    public String toJson() {
-        return "{ type: square, center: " + m_origin.toJson() + ", length: " + this.m_width + " }";
+    // Get
+    @Override
+    public String get_name() {
+        return "square";
     }
+
 
     public String toString() {
         return "square[" + m_origin.toString() + "," + m_width + "]";

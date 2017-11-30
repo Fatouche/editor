@@ -1,6 +1,11 @@
 package org.ulco;
 
 public class Point implements Parsable {
+    // Variables
+    private double m_x;
+    private double m_y;
+
+    // Constructeurs
     public Point(double x, double y) {
         m_x = x;
         m_y = y;
@@ -17,14 +22,11 @@ public class Point implements Parsable {
         m_y = Double.parseDouble(str.substring(yIndex + 2, endIndex));
     }
 
-    public double distance(Point p){
-        return Math.sqrt(Math.pow(getX() - p.getX(),2) + Math.pow(getY() - p.getY(), 2));
-    }
-
     public Point copy() {
         return new Point(m_x, m_y);
     }
 
+    // Get
     public double getX() {
         return m_x;
     }
@@ -33,19 +35,29 @@ public class Point implements Parsable {
         return m_y;
     }
 
+    public String get_name(){
+        return "point";
+    }
+
+    public String get_builder_type(){
+        return "points";
+    }
+
+
+    public double distance(Point p){
+        return Math.sqrt(Math.pow(getX() - p.getX(),2) + Math.pow(getY() - p.getY(), 2));
+    }
+
     void move(Point delta) {
         m_x += delta.getX();
         m_y += delta.getY();
     }
 
-    public String toJson() {
-        return "{ type: point, x: " + m_x + ", y: " + this.m_y + " }";
+    public int type(){
+        return 0;
     }
 
     public String toString() {
         return "point[" + m_x + "," + m_y + "]";
     }
-
-    private double m_x;
-    private double m_y;
 }

@@ -6,8 +6,8 @@ public class Utilitaire {
 
     static public GraphicsObjects select(Document document, Point point, double distance){
         GraphicsObjects list = new GraphicsObjects();
-        for(Layer layer : document.getM_layers()){
-            for(GraphicsObject object : layer.getM_list()) {
+        for(Layer layer : document.get_children()){
+            for(GraphicsObject object : layer.getChildren()) {
                 if(object.isClosed(point, distance)){
                     list.add(object);
                 }

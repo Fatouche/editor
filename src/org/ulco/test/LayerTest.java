@@ -1,7 +1,6 @@
 package org.ulco.test;
 
 import junit.framework.TestCase;
-import org.junit.Test;
 import org.ulco.*;
 
 public class LayerTest extends TestCase {
@@ -23,8 +22,8 @@ public class LayerTest extends TestCase {
 
         l.add(s);
         l.add(c);
-        assertEquals(l.toJson(), "{ type: layer, objects : { { type: square, center: { type: point, x: 0.0, y: 0.0 }, length: 5.0 }, " +
-                "{ type: circle, center: { type: point, x: 5.0, y: 5.0 }, radius: 4.0 } } }");
+        assertEquals(JSON.jsonParsable(l), "{ type: layer, objects : { { type: square, center: { type: point, x: 0.0, y: 0.0 }, length: 5.0 }, " +
+                "{ type: circle, center: { type: point, x: 5.0, y: 5.0 }, radius: 4.0 } }, groups : {  } }");
     }
 
     public void testJSON2() throws Exception {
@@ -35,7 +34,7 @@ public class LayerTest extends TestCase {
         group.add(circle);
         Layer l = new Layer();
         l.add(group);
-        Layer l2 = new Layer(l.toJson());
-        assertEquals(l2.toJson(), l.toJson());
+        Layer l2 = new Layer(JSON.jsonParsable(l));
+        assertEquals(JSON.jsonParsable(l2), JSON.jsonParsable(l));
     }
 }

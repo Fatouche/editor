@@ -30,7 +30,11 @@ abstract public class GraphicsObject implements Parsable {
 
     abstract void move(Point delta);
 
-    abstract public String toJson();
+    /*abstract public String toJson();*/
+
+    public String get_builder_type(){
+        return "objects";
+    }
 
     abstract public String toString();
 

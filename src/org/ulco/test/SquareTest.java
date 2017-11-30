@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import org.ulco.GraphicsObject;
 import org.ulco.Point;
 import org.ulco.Square;
+import org.ulco.JSON;
+
 
 public class SquareTest extends TestCase {
 
@@ -17,12 +19,12 @@ public class SquareTest extends TestCase {
     public void testJson() throws Exception {
         Square s = new Square(new Point(0,0), 10);
 
-        assertEquals(s.toJson(), "{ type: square, center: { type: point, x: 0.0, y: 0.0 }, length: 10.0 }");
+        assertEquals(JSON.jsonParsable(s), "{ type: square, center: { type: point, x: 0.0, y: 0.0 }, length: 10.0 }");
     }
 
     public void testCopy() throws Exception {
         Square s = new Square(new Point(0,0), 10);
 
-        assertEquals(s.toJson(), s.copy().toJson());
+        assertEquals(JSON.jsonParsable(s), JSON.jsonParsable(s.copy()));
     }
 }

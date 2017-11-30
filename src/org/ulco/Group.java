@@ -2,8 +2,8 @@ package org.ulco;
 
 import java.util.Vector;
 
-public class Group extends GraphicsObject{
-    private Vector<GraphicsObject> m_objectList;
+public class Group extends GraphicsObject implements  Builder{
+    private Vector<GraphicsObject> children;
     private int m_ID;
 
     @Override
@@ -13,7 +13,7 @@ public class Group extends GraphicsObject{
 
     @Override
     public boolean isClosed(Point pt, double distance) {
-        for (GraphicsObject go : m_objectList){
+        for (GraphicsObject go : children){
             if (go.isClosed(pt, distance)){
                 return true;
             }
@@ -23,7 +23,7 @@ public class Group extends GraphicsObject{
 
     public int compteurGroup(){
         int compteur = 0;
-        for(GraphicsObject object : m_objectList){
+        for(GraphicsObject object : children){
             if(object.isGroup()){
                 compteur = compteur +1;
             }
@@ -32,7 +32,7 @@ public class Group extends GraphicsObject{
     }
 
     public Group() {
-        m_objectList = new Vector<>();
+        children = new Vector<>();
         m_ID = ID.getInstance().suivant();
     }
 
@@ -41,7 +41,7 @@ public class Group extends GraphicsObject{
         separators.add("objects");
         separators.add("groups");
         separators.add("}");
-        m_objectList = JSON.parseItems(json, separators);
+        children = JSON.parseItems(json, separators);
     }
 
     public void add(Object object) {
@@ -49,13 +49,13 @@ public class Group extends GraphicsObject{
     }
 
     private void addObject(GraphicsObject object) {
-        m_objectList.add(object);
+        children.add(object);
     }
 
     public Group copy() {
         Group g = new Group();
 
-        for (GraphicsObject o : m_objectList) {
+        for (GraphicsObject o : children) {
             g.addObject(o.copy());
         }
         return g;
@@ -67,7 +67,7 @@ public class Group extends GraphicsObject{
 
     public void move(Point delta) {
 
-        for (Object o : m_objectList) {
+        for (Object o : children) {
             GraphicsObject element = (GraphicsObject) (o);
 
             element.move(delta);
@@ -81,8 +81,8 @@ public class Group extends GraphicsObject{
     public int size() {
         int size = 0;
 
-        for (int i = 0; i < m_objectList.size(); ++i) {
-            size += m_objectList.get(i).size();
+        for (int i = 0; i < children.size(); ++i) {
+            size += children.get(i).size();
         }
         return size;
     }
@@ -96,12 +96,12 @@ public class Group extends GraphicsObject{
         String object_str = (json) ? "{ type: group, objects : { " : "group[[";
         String group_str = (json) ? " }, groups : { " : "],[";
         String suffix_str = (json) ? " } }" : "]]";
-        for (GraphicsObject element : m_objectList) {
+        for (GraphicsObject element : children) {
 
             if (element.type() == 1) {
-                object_str += ((json) ? element.toJson() : element.toString()) + ", ";
+                object_str += ((json) ? JSON.jsonParsable(element) : element.toString()) + ", ";
             } else {
-                group_str += json ? element.toJson() : element.toString();
+                group_str += json ? JSON.jsonParsable(element) : element.toString();
             }
         }
         return object_str.substring(0, object_str.length() -2) + group_str + suffix_str;
@@ -113,5 +113,22 @@ public class Group extends GraphicsObject{
 
     public String toString() {
         return export("string");
+    }
+
+    public String get_name(){
+        return "group";
+    }
+
+    public Vector<GraphicsObject> get_children() {
+        return children;
+    }
+
+    @Override
+    public String[] get_types_children() {
+        return new String[]{"objects", "groups"};
+    }
+
+    public String get_builder_type(){
+        return "groups";
     }
 }
