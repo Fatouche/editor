@@ -131,20 +131,23 @@ public class JSON {
     }
 
     private static String jsonAttribs(GraphicsObject go){
-        String output = "";
+        String str = "";
         if (go.get_name() == "square"){
             Square sq = (Square) go;
-            output = "length: " + sq.get_width();
+            str = "length: " + sq.get_width();
         }
         else if (go.get_name() == "circle"){
             Circle ci = (Circle) go;
-            output = "radius: " + ci.get_radius();
+            str = "radius: " + ci.get_radius();
         }
         else if (go.get_name() == "rectangle"){
             Rectangle re = (Rectangle) go;
-            output = "height: " + re.get_height() + ", width: " + re.get_width();
+            str = "height: " + re.get_height() + ", width: " + re.get_width();
+        }else if (go.get_name() == "triangle"){
+            Triangle tr = (Triangle) go;
+            str = "length: " + tr.get_length() + ", height: " + tr.get_height() ;
         }
-        return output;
+        return str;
     }
 
     private static String jsonObject(GraphicsObject go){
